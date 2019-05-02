@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.finalvrproject.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "C:\\Users\\joselynr\\Documents\\VR_final_final_project\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "FinalVRProject [Testing]"
+        }
+      }
+    }
+  ]
+}
