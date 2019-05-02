@@ -4,49 +4,104 @@ using UnityEngine;
 
 public class SecondPuzzleSolver : MonoBehaviour
 {
-    public GameObject BlueBox;
-    public GameObject GreenBox;
-    public GameObject RedBox;
-    public GameObject YellowBox;
-    BoxCollider BlueBoxCol;
-    BoxCollider GreenBoxCol;
-    BoxCollider RedBoxCol;
-    BoxCollider YellowBoxCol;
+    public GameObject ToyBoxFloor;
+    BoxCollider ToyBoxCol;
     public GameObject BlueButton;
     public GameObject GreenButton;
     public GameObject RedButton;
     public GameObject YellowButton;
     public GameObject WaterGate;
-    //public delegate void OnSolved();
-    //public static event OnSolved onPuzzleSolved;
+    public int points = 1;
+    public float tolerance;
+    private int totalPoints = 0;
+    private float mToyBoxFloorHeight;
+    public delegate void OnPlaced(int pts);
+    public static event OnPlaced onButtonPlaced;
+
     // Start is called before the first frame update
     void Start()
     {
-        BlueBoxCol = BlueBox.GetComponent<BoxCollider>();
-        GreenBoxCol = GreenBox.GetComponent<BoxCollider>();
-        RedBoxCol = RedBox.GetComponent<BoxCollider>();
-        YellowBoxCol = YellowBox.GetComponent<BoxCollider>();
-
+        /*Vector3 ToyBoxPosition = ToyBox.transform.position;
+        Vector3 BlueButtonPosition = BlueButton.transform.position;
+        Vector3 GreenButtonPosition = GreenButton.transform.position;
+        Vector3 RedButtonPosition = RedButton.transform.position;
+        Vector3 YellowButtonPosition = YellowButton.transform.position;
+        
+        if (ToyBoxPosition.y < BlueButtonPosition.y && (BlueButtonPosition.y - ToyBoxPosition.y) < mToyBoxFloorHeight + tolerance
+            && Mathf.Abs(BlueButtonPosition.x - ToyBoxPosition.x) < tolerance
+            && Mathf.Abs(BlueButtonPosition.z - ToyBoxPosition.z) < tolerance)*/
+        mToyBoxFloorHeight = ToyBoxFloor.GetComponent<Renderer>().bounds.size.y;
+        ToyBoxCol = ToyBoxFloor.GetComponent<BoxCollider>();
+        totalPoints = 0;
     }
 
-    bool CorrectButtonToBox()
+    int BlueButtonInBox(int points)
     {
-        if (BlueBoxCol == BlueButton && GreenBoxCol == GreenButton && RedBoxCol == RedButton && YellowBoxCol == YellowButton)
+        Vector3 ToyBoxPosition = ToyBoxFloor.transform.position;
+        Vector3 BlueButtonPosition = BlueButton.transform.position;
+
+      if (ToyBoxPosition.y < BlueButtonPosition.y)
         {
-            return true;
+            points = points + 1;
+            return points;
         }
         else
         {
-            return true;
+            return points;
         }
 
     }
 
+    int GreenButtonInBox( int points)
+    {
+        Vector3 ToyBoxPosition = ToyBoxFloor.transform.position;
+        Vector3 GreenButtonPosition = GreenButton.transform.position;
+        if (ToyBoxPosition.y < GreenButtonPosition.y)
+        {
+            points = points + 1;
+            return points;
+        }
+        else
+        {
+            return points;
+        }
+
+    }
+    int YellowButtonInBox()
+    {
+        Vector3 ToyBoxPosition = ToyBoxFloor.transform.position;
+        Vector3 YellowButtonPosition = YellowButton.transform.position;
+        if (ToyBoxPosition.y < YellowButtonPosition.y)
+        {
+            points = points + 1;
+            return points; 
+        }
+        else
+        {
+            return points;
+        }
+
+    }
+    int RedButtonInBox(int points)
+    {
+        Vector3 ToyBoxPosition = ToyBoxFloor.transform.position;
+        Vector3 RedButtonPosition = RedButton.transform.position;
+        if (ToyBoxPosition.y < RedButtonPosition.y)
+        {
+            points = points + 1;
+            return points;
+        }
+        else
+        {
+            return points;
+        }
+
+    }
 
 
     bool IsSolved()
     {
-        if (CorrectButtonToBox() == true)
+        if (points > 600)
         {
             return true;
         }
@@ -59,6 +114,11 @@ public class SecondPuzzleSolver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        BlueButtonInBox(points);
+        GreenButtonInBox(points);
+        RedButtonInBox(points);
+        YellowButtonInBox();
+        totalPoints += points;
         if (IsSolved() == true)
         {
             float changeInHeight = Time.deltaTime * 2;
